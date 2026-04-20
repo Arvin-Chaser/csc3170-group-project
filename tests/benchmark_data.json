@@ -1,0 +1,109 @@
+{
+  "test_cases": [
+    {
+      "id": 1,
+      "question": "查询员工ID为25的直属上级姓名",
+      "gold_sql": "SELECT CONCAT(s.Last_Name, s.First_Name) AS Supervisor_Name FROM Employee e LEFT JOIN Employee s ON e.Supervisor_ID = s.Employee_ID WHERE e.Employee_ID = 25",
+      "complexity": "easy",
+      "tables": ["Employee"]
+    },
+    {
+      "id": 2,
+      "question": "查询研发部的所有员工姓名",
+      "gold_sql": "SELECT CONCAT(e.Last_Name, e.First_Name) AS Employee_Name FROM Employee e JOIN Department d ON e.Department_ID = d.Department_ID WHERE d.Department_Name = '研发部'",
+      "complexity": "medium",
+      "tables": ["Employee", "Department"]
+    },
+    {
+      "id": 3,
+      "question": "统计每个部门的员工数量",
+      "gold_sql": "SELECT d.Department_Name, COUNT(e.Employee_ID) AS Employee_Count FROM Department d LEFT JOIN Employee e ON d.Department_ID = e.Department_ID GROUP BY d.Department_ID, d.Department_Name",
+      "complexity": "medium",
+      "tables": ["Department", "Employee"]
+    },
+    {
+      "id": 4,
+      "question": "查询预算超过50万的所有项目及其项目经理姓名",
+      "gold_sql": "SELECT p.Project_Name, p.Budget, CONCAT(pm.Last_Name, pm.First_Name) AS Manager_Name FROM Project p LEFT JOIN Employee pm ON p.Project_Manager_ID = pm.Employee_ID WHERE p.Budget > 500000",
+      "complexity": "medium",
+      "tables": ["Project", "Employee"]
+    },
+    {
+      "id": 5,
+      "question": "查询所有姓张的员工姓名",
+      "gold_sql": "SELECT CONCAT(Last_Name, First_Name) AS Employee_Name FROM Employee WHERE Last_Name = '张'",
+      "complexity": "easy",
+      "tables": ["Employee"]
+    },
+    {
+      "id": 6,
+      "question": "查询项目ID为3的客户名称",
+      "gold_sql": "SELECT c.Name AS Client_Name FROM Client c JOIN Client_Project cp ON c.Client_id = cp.Client_id WHERE cp.Project_ID = 3",
+      "complexity": "medium",
+      "tables": ["Client", "Client_Project"]
+    },
+    {
+      "id": 7,
+      "question": "查询每个员工的总薪资（工资加奖金）",
+      "gold_sql": "SELECT e.Employee_ID, CONCAT(e.Last_Name, e.First_Name) AS Employee_Name, SUM(sr.Amount + COALESCE(sr.Bonus, 0)) AS Total_Salary FROM Employee e JOIN Salary_Record sr ON e.Employee_ID = sr.Employee_ID GROUP BY e.Employee_ID, e.Last_Name, e.First_Name",
+      "complexity": "hard",
+      "tables": ["Employee", "Salary_Record"]
+    },
+    {
+      "id": 8,
+      "question": "查询没有分配任何任务的员工姓名",
+      "gold_sql": "SELECT CONCAT(e.Last_Name, e.First_Name) AS Employee_Name FROM Employee e LEFT JOIN Task_Assignment ta ON e.Employee_ID = ta.Employee_ID WHERE ta.Task_ID IS NULL",
+      "complexity": "medium",
+      "tables": ["Employee", "Task_Assignment"]
+    },
+    {
+      "id": 9,
+      "question": "查询2025年入职的所有员工姓名和入职日期",
+      "gold_sql": "SELECT CONCAT(Last_Name, First_Name) AS Employee_Name, Hire_date FROM Employee WHERE Hire_date BETWEEN '2025-01-01' AND '2025-12-31'",
+      "complexity": "easy",
+      "tables": ["Employee"]
+    },
+    {
+      "id": 10,
+      "question": "查询状态为Done的所有任务及其所属项目名称",
+      "gold_sql": "SELECT t.Task_name, t.Status, p.Project_Name FROM Task t JOIN Project p ON t.Project_ID = p.Project_ID WHERE t.Status = 'Done'",
+      "complexity": "medium",
+      "tables": ["Task", "Project"]
+    },
+    {
+      "id": 11,
+      "question": "统计每个项目的任务数量",
+      "gold_sql": "SELECT p.Project_Name, COUNT(t.Task_ID) AS Task_Count FROM Project p LEFT JOIN Task t ON p.Project_ID = t.Project_ID GROUP BY p.Project_ID, p.Project_Name",
+      "complexity": "medium",
+      "tables": ["Project", "Task"]
+    },
+    {
+      "id": 12,
+      "question": "查询阿里巴巴参与的所有项目名称",
+      "gold_sql": "SELECT p.Project_Name FROM Project p JOIN Client_Project cp ON p.Project_ID = cp.Project_ID JOIN Client c ON cp.Client_id = c.Client_id WHERE c.Name = '阿里巴巴'",
+      "complexity": "hard",
+      "tables": ["Project", "Client_Project", "Client"]
+    },
+    {
+      "id": 13,
+      "question": "查询迟到次数超过2次的员工姓名和迟到次数",
+      "gold_sql": "SELECT CONCAT(e.Last_Name, e.First_Name) AS Employee_Name, COUNT(*) AS Late_Count FROM Employee e JOIN Attendance a ON e.Employee_ID = a.Employee_ID WHERE a.Status = 'Late' GROUP BY e.Employee_ID, e.Last_Name, e.First_Name HAVING COUNT(*) > 2",
+      "complexity": "hard",
+      "tables": ["Employee", "Attendance"]
+    },
+    {
+      "id": 14,
+      "question": "查询每个部门的平均薪资",
+      "gold_sql": "SELECT d.Department_Name, AVG(sr.Amount) AS Avg_Salary FROM Department d JOIN Employee e ON d.Department_ID = e.Department_ID JOIN Salary_Record sr ON e.Employee_ID = sr.Employee_ID GROUP BY d.Department_ID, d.Department_Name",
+      "complexity": "hard",
+      "tables": ["Department", "Employee", "Salary_Record"]
+    },
+    {
+      "id": 15,
+      "question": "查询项目经理ID为5的所有任务名称",
+      "gold_sql": "SELECT t.Task_name FROM Task t JOIN Project p ON t.Project_ID = p.Project_ID WHERE p.Project_Manager_ID = 5",
+      "complexity": "medium",
+      "tables": ["Task", "Project"]
+    }
+  ]
+}
