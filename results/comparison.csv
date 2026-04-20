@@ -1,0 +1,4 @@
+Method,Total,Correct,Accuracy,Easy,Medium,Hard
+zero_shot,15,10,66.67%,3/3,4/8,3/4
+few_shot,15,10,66.67%,3/3,5/8,2/4
+cot,15,11,73.33%,3/3,5/8,3/4
